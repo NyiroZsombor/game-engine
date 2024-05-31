@@ -7,13 +7,7 @@ async function loadObject2Ds() {
         appendScript("object-2ds/physics-object-2d.js"),
         appendScript("object-2ds/camera-2d.js"),
     ]);
+    await appendScript("object-2ds/done.js");
 }
 
 loadObject2Ds();
-
-const maxCollisionLayersLength = 5;
-const collisionLayers = [];
-
-for (let i = 0; i < maxCollisionLayersLength; i++) {
-    collisionLayers.push([]);
-}

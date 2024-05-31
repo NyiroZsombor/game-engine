@@ -9,10 +9,10 @@ class PhysicsObject2D extends Object2D {
      * @param {Number} y - Y position of the object
      * @param {Number} w - Width of the object
      * @param {Number} h - Height of the object
-     * @param {*} collisionLayerNums 
-     * @param {*} collisionMaskNums 
+     * @param {Number[]} collisionLayerNums - The list of layers that specify which objects can collide with this object 
+     * @param {Number[]} collisionMaskNums - The list of layers that specify which objects can this object collide with
      */
-    constructor(x, y, w, h, collisionLayerNums, collisionMaskNums) {
+    constructor(x, y, w, h, collisionLayerNums = [], collisionMaskNums = []) {
         super(x, y, w, h, collisionLayerNums);
         this.collisionMaskNums = collisionMaskNums;
 

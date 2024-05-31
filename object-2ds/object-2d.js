@@ -8,9 +8,9 @@ class Object2D {
      * @param {Number} y - Y position of the object
      * @param {Number} width - Width of the object
      * @param {Number} height - Height of the object
-     * @param {*} collisionLayerNums 
+     * @param {Number[]} collisionLayerNums - The list of layers that specify which objects can collide with this object 
      */
-    constructor(x, y, width, height, collisionLayerNums) {
+    constructor(x, y, width, height, collisionLayerNums = []) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -23,6 +23,8 @@ class Object2D {
         this.gameCanvas = new GameCanvas(this.x, this.y, this.width, this.height);
         this.canvas = this.gameCanvas.canvas;
         this.ctx = this.gameCanvas.ctx;
+
+        object2Ds.push(this);
     }
 
     /**

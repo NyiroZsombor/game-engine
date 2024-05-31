@@ -10,6 +10,8 @@ class Debug {
         this.dtSampleSize = 60;
         this.dtSamples = [];
         this.debugRenderList = debugRenderList;
+
+        this.gameCanvas = new GameCanvas(0, 0, 0, 0);
     }
 
     /**
@@ -41,7 +43,7 @@ class Debug {
         for (let i = 0; i < this.debugRenderList.length; i++) {
             let debugObject = this.debugRenderList[i]
             debugObject.renderDebug();
-            debugObject.gameCanvas.toCtx(ctx);
+            debugObject.gameCanvas.toCtx(this.ctx);
         }
     }
 

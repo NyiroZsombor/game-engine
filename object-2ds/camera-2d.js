@@ -23,10 +23,9 @@ class Camera2D extends Object2D {
                 this.y + this.height / 2 * followY,
                 this.width * this.followX,
                 this.height * this.followY,
-                );
-                
-                console.log(this);
-                this.updatePosition(
+            );
+            
+            this.updatePosition(
                 this.followObject.x + this.followObject.width * this.zoom / 2,
                 this.followObject.y + this.followObject.height * this.zoom / 2,
             );
@@ -53,20 +52,14 @@ class Camera2D extends Object2D {
      */
     update() {
         if (this.followObject) {
-            if (this.followObject.x < this.followArea.x
-            || this.followObject.x + this.followObject.width > this.followArea.x + this.followArea.width) {
-                this.updatePosition(
-                    this.followObject.x + this.followObject.width * this.zoom / 2,
-                    this.y + this.height,
-                );
+            if (this.followObject.x < this.followArea.x || this.followObject.x + this.followObject.width > this.followArea.x + this.followArea.width) {
+                this.updatePosition(this.followObject.x + this.followObject.width * this.zoom / 2, this.y + this.height);
+                console.log("x");
             }
 
-            if (this.followObject.y < this.followArea.y
-            || this.followObject.y + this.followObject.height > this.followArea.y + this.followArea.height) {
-                this.updatePosition(
-                    this.x + this.width,
-                    this.followObject.y + this.followObject.height * this.zoom / 2,
-                );
+            if (this.followObject.y < this.followArea.y || this.followObject.y + this.followObject.height > this.followArea.y + this.followArea.height) {
+                this.updatePosition(this.x + this.width, this.followObject.y + this.followObject.height * this.zoom / 2);
+                console.log("y");
             }
             
             /*  
@@ -109,6 +102,7 @@ class Camera2D extends Object2D {
         for (let i = 0; i < this.objectList.length; i++) {
             let obj = this.objectList[i];
             if (!this.collide(obj)) continue;
+            if (obj == this) continue;
 
             obj.render(this.gameCanvas);
             obj.gameCanvas.toCtx(this.ctx,
