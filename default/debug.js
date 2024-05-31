@@ -39,7 +39,9 @@ class Debug {
      */
     renderDebugObjects() {
         for (let i = 0; i < this.debugRenderList.length; i++) {
-            this.debugRenderList[i].renderDebug();
+            let debugObject = this.debugRenderList[i]
+            debugObject.renderDebug();
+            debugObject.gameCanvas.toCtx(ctx);
         }
     }
 

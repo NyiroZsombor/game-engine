@@ -9,11 +9,11 @@ async function loadObject2Ds() {
     ]);
 }
 
-const maxCollisionListLength = 5;
-const collisionList = [];
-
-for (let i = 0; i < maxCollisionListLength; i++) {
-    collisionList.push([]);
-}
-
 loadObject2Ds();
+
+const maxCollisionLayersLength = 5;
+const collisionLayers = [];
+
+for (let i = 0; i < maxCollisionLayersLength; i++) {
+    collisionLayers.push([]);
+}
