@@ -8,18 +8,19 @@ class Object2D {
      * @param {Number} y - Y position of the object
      * @param {Number} width - Width of the object
      * @param {Number} height - Height of the object
-     * @param {Object2D[] | undefined} objectList - The list of objects that should be rendered and updated together
+     * @param {*} collisionLayerNums 
      */
-    constructor(x, y, width, height, objectList = undefined) {
+    constructor(x, y, width, height, collisionLayerNums) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        if (objectList) {
-            objectList.push(this);
+        this.collisionLayerNums = collisionLayerNums;
+        for (let i = 0; i < this.collisionLayerNums.length; i++) {
+            collisionLayers[this.collisionLayerNums[i]].push(this);
         }
 
-        this.gameCanvas = new GameCanvas(0, 0, this.width, this.height);
+        this.gameCanvas = new GameCanvas(this.x, this.y, this.width, this.height);
         this.canvas = this.gameCanvas.canvas;
         this.ctx = this.gameCanvas.ctx;
     }
@@ -64,6 +65,6 @@ class Object2D {
         this.gameCanvas.clear();
 
         this.ctx.strokeStyle = "#F00";
-        this.ctx.strokeRect(this.x, this.y, this.width, this.height);
+        this.ctx.strokeRect(0, 0, this.width, this.height);
     }
 }

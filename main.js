@@ -1,18 +1,16 @@
 debug = true;
 objs = [];
-new Object2D(50, 50, 50, 300, objs);
-o1 = new PhysicsObject2D(500, 500, 100, 100, objs);
-o2 = new PhysicsObject2D(300, 500, 100, 100, objs);
-o1.gravity = 0;
-o2.gravity = 0;
+objs.push(new Object2D(0, canvas.height - 50, canvas.width, 50, [0]));
+o1 = new PhysicsObject2D(500, 500, 100, 100, [0], [0]);
+o2 = new PhysicsObject2D(300, 500, 100, 100, [0], [0]);
 o1.speed = 40;
 o1.color = "#F00";
 o2.color = "#0F0";
 debugObj.debugRenderList = objs;
-console.log(objs);
 
 o1.update = o2.update = function(dt) {
     this.move(dt);
+    if (input.keysPressed["KeyW"]) o2.jump(dt);
 }
 
 o1.render = o2.render = function() {
@@ -25,12 +23,10 @@ o1.render = o2.render = function() {
 function update(dt) {
     if (input.keysPressed["KeyD"]) o2.velX += o2.speed;
     if (input.keysPressed["KeyA"]) o2.velX += -o2.speed;
-    if (input.keysPressed["KeyW"]) o2.velY += -o2.speed;
     if (input.keysPressed["KeyS"]) o2.velY += o2.speed;
 
     if (input.keysPressed["ArrowRight"]) o1.velX += o1.speed;
     if (input.keysPressed["ArrowLeft"]) o1.velX += -o1.speed;
-    if (input.keysPressed["ArrowUp"]) o1.velY += -o1.speed;
     if (input.keysPressed["ArrowDown"]) o1.velY += o1.speed;
 
     //o1.velX = Math.sin(Date.now() / 1000 * Math.PI) * 100;
