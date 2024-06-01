@@ -104,7 +104,7 @@ class Camera2D extends Object2D {
             if (!this.collide(obj)) continue;
             if (obj == this) continue;
 
-            obj.render(this.gameCanvas);
+            obj.render();
             obj.gameCanvas.toCtx(this.ctx,
                 obj.x - this.x,
                 obj.y - this.y,
