@@ -15,21 +15,38 @@ class Camera2D extends Object2D {
         this.followX = followX;
         this.followY = followY;
         this.zoom = 1;
-        
-        this.followObject = followObject;
-        if (this.followObject) {
+    }
+
+    /**
+     * Sets the object the camara should be centered on
+     * @param {Object2D} object2D - The object the camera should be centered on
+     */
+    set followObject(object2D) {
+        this.$followObject = object2D;
+
+        if (this.followArea == undefined) {
             this.followArea = new Object2D(
-                this.x + this.width / 2 * followX,
-                this.y + this.height / 2 * followY,
+                this.x + this.width / 2 * this.followX,
+                this.y + this.height / 2 * this.followY,
                 this.width * this.followX,
                 this.height * this.followY,
             );
-            
-            this.updatePosition(
-                this.followObject.x + this.followObject.width * this.zoom / 2,
-                this.followObject.y + this.followObject.height * this.zoom / 2,
-            );
         }
+        else {
+            this.followArea.x = this.x + this.width / 2 * this.followX;
+            this.followArea.y = this.y + this.height / 2 * this.followY;
+            this.followArea.width = this.width * this.followX;
+            this.followArea.height = this.height * this.followY;
+        }
+        
+        this.updatePosition(
+            this.followObject.x + this.followObject.width * this.zoom / 2,
+            this.followObject.y + this.followObject.height * this.zoom / 2,
+        );
+    }
+
+    get followObject() {
+        return this.$followObject;
     }
     
     /**
@@ -54,12 +71,10 @@ class Camera2D extends Object2D {
         if (this.followObject) {
             if (this.followObject.x < this.followArea.x || this.followObject.x + this.followObject.width > this.followArea.x + this.followArea.width) {
                 this.updatePosition(this.followObject.x + this.followObject.width * this.zoom / 2, this.y + this.height);
-                console.log("x");
             }
 
             if (this.followObject.y < this.followArea.y || this.followObject.y + this.followObject.height > this.followArea.y + this.followArea.height) {
                 this.updatePosition(this.x + this.width, this.followObject.y + this.followObject.height * this.zoom / 2);
-                console.log("y");
             }
             
             /*  

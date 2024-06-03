@@ -3,6 +3,8 @@ objs = [];
 objs.push(new Object2D(0, canvas.height - 50, canvas.width, 50, [0]));
 const o1 = new PhysicsObject2D(500, 500, 100, 100, [0], [0]);
 const o2 = new PhysicsObject2D(300, 500, 100, 100, [0], [0]);
+camera.followObject = o2;
+console.log(camera);
 o1.speed = 40;
 o1.color = "#F00";
 o2.color = "#0F0";

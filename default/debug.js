@@ -12,6 +12,8 @@ class Debug {
         this.debugRenderList = debugRenderList;
 
         this.gameCanvas = new GameCanvas(0, 0, 0, 0);
+        this.canvas = this.gameCanvas.canvas;
+        this.ctx = this.gameCanvas.ctx;
     }
 
     /**
@@ -62,6 +64,6 @@ class Debug {
         ctx.fillText(`dt: ${this.updateDt()}`, 5, 5);
         ctx.fillText(`mousePos: ${JSON.stringify(input.mousePos)}`, 5, 5 + fontSize);
         ctx.fillText(`keysPressed: ${JSON.stringify(input.keysPressed)}`, 5, 5 + fontSize * 2);
-        //if (camera != undefined) ctx.fillText(`cameraPos: (${camera.x}, ${camera.y})`, 5, 5 + fontSize * 3);
+        if (camera != undefined) ctx.fillText(`cameraPos: {"x":${camera.x},"y":${camera.y}}`, 5, 5 + fontSize * 3);
     }
 }
