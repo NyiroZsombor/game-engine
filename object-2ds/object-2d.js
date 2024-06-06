@@ -11,10 +11,10 @@ class Object2D {
      * @param {Number[]} collisionLayerNums - The list of layers that specify which objects can collide with this object 
      */
     constructor(x, y, width, height, collisionLayerNums = []) {
-        this.x = x;
-        this.y = y;
         this.width = width;
         this.height = height;
+        this.x = x;
+        this.y = y;
         this.collisionLayerNums = collisionLayerNums;
         for (let i = 0; i < this.collisionLayerNums.length; i++) {
             collisionLayers[this.collisionLayerNums[i]].push(this);
@@ -33,8 +33,8 @@ class Object2D {
      * @returns {Boolean} The occurence of the collision
      */
     collide(object2D) {
-        let xCollision = object2D.x < this.x + this.width && object2D.x + object2D.width > this.x;
-        let yCollision = object2D.y < this.y + this.height && object2D.y + object2D.height > this.y;
+        let xCollision = object2D.x < this.right && object2D.right > this.x;
+        let yCollision = object2D.y < this.bottom && object2D.bottom > this.y;
     
         return xCollision && yCollision;
     }
@@ -44,8 +44,8 @@ class Object2D {
      * @returns If the object is being hovered by the mouse
      */
     isMouseOver() {
-        xOver = input.mousePos.x > this.x && input.mousePos.x < this.x + this.width;
-        yOver = input.mousePos.y > this.y && input.mousePos.y < this.y + this.height;
+        xOver = input.mousePos.x > this.x && input.mousePos.x < this.right;
+        yOver = input.mousePos.y > this.y && input.mousePos.y < this.bottom;
         return xOver && yOver;
     }
     
@@ -68,5 +68,73 @@ class Object2D {
 
         this.ctx.strokeStyle = "#F00";
         this.ctx.strokeRect(0, 0, this.width, this.height);
+    }
+
+    set x(x) {
+        this.$x = x;
+        this.$right = this.$x + this.width;
+        this.$centerX = this.$x + this.width / 2;
+    }
+
+    set left(x) {
+        this.x = x;
+    }
+
+    set right(x) {
+        this.x = x - this.width;
+    }
+
+    set centerX(x) {
+        this.x = x - this.width / 2;
+    }
+
+    get x() {
+        return this.$x;
+    }
+
+    get left() {
+        return this.x;
+    }
+
+    get right() {
+        return this.$right;
+    }
+
+    get centerX() {
+        return this.$centerX;
+    }
+
+    set y(y) {
+        this.$y = y;
+        this.$bottom = this.$y + this.height;
+        this.$centerY = this.$y + this.height / 2;
+    }
+
+    set top(y) {
+        this.y = y;
+    }
+
+    set bottom(y) {
+        this.y = y - this.height;
+    }
+
+    set centerY(y) {
+        this.y = y - this.height / 2;
+    }
+
+    get y() {
+        return this.$y;
+    }
+
+    get top() {
+        return this.y;
+    }
+
+    get bottom() {
+        return this.$bottom;
+    }
+
+    get centerY() {
+        return this.$centerY;
     }
 }
