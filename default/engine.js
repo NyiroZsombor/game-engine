@@ -14,6 +14,7 @@ function gameLoop() {
     update(dt);
     renderDefault();
     render();
+    renderUI();
     if (debug) debugObj.render();
     defaultPostUpdate(dt);
     postUpdate(dt);
@@ -35,15 +36,31 @@ function renderDefault() {
 }
 
 /**
+ * Renders UI objects
+ */
+function renderUI() {}
+
+/**
  * Default updates run by the engine after rendering
  */
-function defaultPostUpdate() {
+function defaultPostUpdate(dt) {
     input.update();
 }
 
-function update() {}
+/**
+ * Runs every frame, the updating of objects should be done here
+ * @param {Number} dt - Time elapsed since last frame in seconds
+ */
+function update(dt) {}
+/**
+ * Runs every frame, the rendering of the objects should be done here
+ */
 function render() {}
-function postUpdate() {}
+/**
+ * Runs every frame after the rendering
+ * @param {Number} dt - Time elapsed since last frame in seconds
+ */
+function postUpdate(dt) {}
 
 gameCanvas = new GameCanvas(0, 0, window.innerWidth, window.innerHeight);
 gameCanvas.display = true;

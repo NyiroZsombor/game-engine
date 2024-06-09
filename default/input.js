@@ -10,10 +10,9 @@ class Input {
         this.mousePos = {x: undefined, y: undefined};
         this.actionKeys = {}; // {code: actionName ...}
         this.actionFunctionalities = {}; // {actionName: action ...}
-        this.preventDefaultKeyActionList = []; 
-
-        this.loadDefaultActions();
-        this.loadEventListeners();
+        this.preventDefaultKeyActionList = [];
+        
+        this.loadKeyboard();
     }
 
     /**
@@ -49,6 +48,8 @@ class Input {
      * Loads keyboard related event listeners
      */
     loadKeyboard() {
+        this.loadDefaultActions();
+
         document.addEventListener("keydown", e => {
             const keyPress = this.keysPressed[e.code];
             const actionName = this.actionKeys[e.code];
@@ -122,6 +123,6 @@ class Input {
      */
     update() {
         for (let key in this.keysPressed) this.keysPressed[key]++;
-        if (this.mouseDown.mouseDown > 0) this.mouseDown++;
+        if (this.mouseDown > 0) this.mouseDown++;
     }
 }

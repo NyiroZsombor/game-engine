@@ -24,7 +24,9 @@ class Object2D {
         this.canvas = this.gameCanvas.canvas;
         this.ctx = this.gameCanvas.ctx;
 
-        object2Ds.push(this);
+        object2Ds[currentId] = this;
+        this.id = currentId;
+        currentId++;
     }
 
     /**
