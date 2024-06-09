@@ -20,7 +20,7 @@ class Object2D {
             collisionLayers[this.collisionLayerNums[i]].push(this);
         }
 
-        this.gameCanvas = new GameCanvas(this.x, this.y, this.width, this.height);
+        this.gameCanvas = new GameCanvas(0, 0, this.width, this.height);
         this.canvas = this.gameCanvas.canvas;
         this.ctx = this.gameCanvas.ctx;
 

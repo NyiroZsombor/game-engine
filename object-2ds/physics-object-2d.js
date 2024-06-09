@@ -1,6 +1,6 @@
 /**
- * An object with basic physic functioanlites
- * @todo jumping
+ * An object with basic physics functioanlites
+ * @todo fix jumping
  */
 class PhysicsObject2D extends Object2D {
     /**
@@ -43,6 +43,7 @@ class PhysicsObject2D extends Object2D {
 
         let dim = dimmensions[axis];
         let vel = velocites[axis];
+        let collision = false;
         
         for (let i = 0; i < this.collisionMaskNums.length; i++) {
             let currentCollisionLayerNum = this.collisionMaskNums[i];
@@ -59,6 +60,7 @@ class PhysicsObject2D extends Object2D {
                     collider[vel] += temp * dt;
                 }
                 
+                collision = true;
                 let dir1Collision = this[axis] + this[dim] >= collider[axis] && this.previous[axis] + this.previous.height <= collider[axis];
                 let dir2Collision = this[axis] <= collider[axis] + collider[dim] && this.previous[axis] >= collider[axis] + collider[dim];
                 
@@ -68,6 +70,8 @@ class PhysicsObject2D extends Object2D {
                 if (dir2Collision) this[axis] = collider[axis] + collider[dim];
             }
         }
+
+        return collision;
     }
 
     /**
@@ -77,14 +81,16 @@ class PhysicsObject2D extends Object2D {
     move(dt) {
         this.previous = {x: this.x, y: this.y, width: this.width, height: this.height};
         this.velY += this.gravity * this.dragCoefficient * dt;
-        let decayFactor = Math.exp(-this.dragCoefficient * dt);
-        this.velX *= decayFactor;
-        this.velY *= decayFactor;
     
         this.x += this.velX * dt;
         this.collisions("x");
         this.y += this.velY * dt;
         this.collisions("y");
+
+        let decayFactor = 0;
+        if (this.dragCoefficient != -1) decayFactor = Math.exp(-this.dragCoefficient * dt);
+        this.velX *= decayFactor;
+        this.velY *= decayFactor;
     }
 
     /**
