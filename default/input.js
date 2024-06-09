@@ -46,9 +46,9 @@ class Input {
     }
 
     /**
-     * Sets up the event listeners for keyboard and mouse events
+     * Loads keyboard related event listeners
      */
-    loadEventListeners() {
+    loadKeyboard() {
         document.addEventListener("keydown", e => {
             const keyPress = this.keysPressed[e.code];
             const actionName = this.actionKeys[e.code];
@@ -91,16 +91,37 @@ class Input {
                 }
             }
         });
+    }
 
+    updateMousePos(e) {
+        this.mousePos.x = e.clientX;
+        this.mousePos.y = e.clientY;
+    }
+ 
+    /**
+     * Loads mouse related event listeners
+     */
+    loadMouse() {
         document.addEventListener("mousemove", e => {
-            this.mousePos.x = e.clientX;
-            this.mousePos.y = e.clientY;
+            this.updateMousePos(e);
+        });
+
+        document.addEventListener("mousedown", e => {
+            this.updateMousePos(e);
+            this.mouseDown = 1;
+        });
+
+        document.addEventListener("mouseup", e => {
+            this.updateMousePos(e);
+            this.mouseDown = 0;
         });
     }
+
     /**
      * Runs every frame, updates the properties of the object
      */
     update() {
         for (let key in this.keysPressed) this.keysPressed[key]++;
+        if (this.mouseDown.mouseDown > 0) this.mouseDown++;
     }
 }
