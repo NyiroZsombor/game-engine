@@ -42,8 +42,8 @@ class Debug {
      * Runs the renderDebug() method of the objects in debugRenderList
      */
     renderDebugObjects() {
-        for (let i = 0; i < this.debugRenderList.length; i++) {
-            let debugObject = this.debugRenderList[i]
+        for (let key in this.debugRenderList) {
+            let debugObject = this.debugRenderList[key];
             debugObject.renderDebug();
             debugObject.gameCanvas.toCtx(this.ctx);
         }

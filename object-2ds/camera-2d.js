@@ -61,8 +61,8 @@ class Camera2D extends Object2D {
     render() {
         this.gameCanvas.clear();
 
-        for (let i = 0; i < this.objectList.length; i++) {
-            let obj = this.objectList[i];
+        for (let key in this.objectList) {
+            let obj = this.objectList[key];
             if (!this.collide(obj)) continue;
             if (obj == this) continue;
 
