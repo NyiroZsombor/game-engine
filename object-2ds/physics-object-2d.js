@@ -18,6 +18,7 @@ class PhysicsObject2D extends Object2D {
 
         this.velX = 0;
         this.velY = 0;
+        this.normalVelocities = {}; // {{velX, velY}: {normVelX, normVelY}}
         this.speed = 160;
         this.gravity = 1200;
         this.dragCoefficient = 8;
@@ -98,4 +99,21 @@ class PhysicsObject2D extends Object2D {
      * @param {Number} dt - Time elapsed since the last frame in seconds
      */
     update(dt) {}
+
+    get normVel() {
+        let normVel = this.normalVelocities[{x: this.velX, y: this.velY}];
+        if (normVel != undefined) return normVel;
+        else {
+            let dist = Math.hypot(this.velX, this.velY);
+            return this.normalVelocities[{x: this.velX, y: this.velY}] = {x: this.velX / dist, y: this.velY / dist};
+        }
+    }
+
+    get normVelX() {
+        return this.normVel.x;
+    }
+
+    get normVelY() {
+        return this.normVel.y;
+    }
 }

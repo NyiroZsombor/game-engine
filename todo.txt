@@ -1,0 +1,6 @@
+-- Object2D canvas position --
+-- PhysicsObject2D normalize velocity --
+collision layers should be a dictionary with custom layer names
+-- should be able to turn off decay factor of PhyscsObject2D --
+add mouseDown to Input
+remove object2Ds list
