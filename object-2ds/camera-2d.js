@@ -56,20 +56,29 @@ class Camera2D extends Object2D {
     }
 
     /**
+     * Renders an object to the camera if it should be visible
+     * @param {Object2D} obj - Object to be rendered
+     */
+    renderObject(obj) {
+        obj.render();
+        obj.gameCanvas.toCtx(this.ctx, obj.x + obj.gameCanvas.x - this.x, obj.y + obj.gameCanvas.y - this.y);
+    }
+
+    /**
+     * Renders a list of objects to the camera if they should be visible
+     * @param {*} objs - An object with ids as keys and Object2Ds as velues. List of objects to be rendered
+     */
+    renderListOfObjects(objs) {
+        for (let key in objs) {
+            let obj = obj[key];
+            this.renderObject(obj);
+        }
+    }
+
+    /**
      * Renders the contents of the camera
      */
     render() {
-        this.gameCanvas.clear();
-
-        for (let key in this.objectList) {
-            let obj = this.objectList[key];
-            if (!this.collide(obj)) continue;
-            if (obj == this) continue;
-
-            obj.render();
-            obj.gameCanvas.toCtx(this.ctx, obj.x + obj.gameCanvas.x - this.x, obj.y + obj.gameCanvas.y - this.y);
-        }
-
         this.gameCanvas.toCtx(ctx);
     }
 

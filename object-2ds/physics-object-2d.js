@@ -18,8 +18,7 @@ class PhysicsObject2D extends Object2D {
 
         this.velX = 0;
         this.velY = 0;
-        this.normalVelocitiesX = {};
-        this.normalVelocitiesY = {};
+        this.normalVelocities = {0: {0: {x: 0, y: 0}}};
         this.speed = 160;
         this.gravity = 1200;
         this.dragCoefficient = 8;
@@ -101,21 +100,31 @@ class PhysicsObject2D extends Object2D {
      */
     update(dt) {}
 
-    get normVel() {
-        let normVelX = this.normalVelocitiesX[this.velX];
-        let normVelY = this.normalVelocitiesY[this.velY];
-        let normVel = {x: undefined, y: undefined};
-        if (normVelX != undefined) {
-            normVel.x = normVelX;
-            normVel.y = normVelY;
-        }
-        else {
-            let dist = Math.hypot(this.velX, this.velY);
-            normVelX = this.normalVelocitiesX[this.velX] = this.velX / dist;
-            normVelY = this.normalVelocitiesY[this.velY] = this.velY / dist;
+    normVelExists() {
+        let normVelX = this.normalVelocities[this.velX];
+        let normVelY;
+
+        if (normVelX != undefined && isNaN(normVelX)) {
+            normVelY = normVelX[this.velY];
+            return normVelY != undefined && isNaN(normVelY);
         }
 
-        return {x: normVelX, y: normVelY};
+        return false;
+    }
+
+    get normVel() {
+        if (this.normVelExists()) {
+            return this.normalVelocities[this.velX][this.velY];
+        }
+
+        let normVelX = this.normalVelocities[this.velX];
+        let dist = Math.hypot(this.velX, this.velY);
+            
+        if (normVelX == undefined || isNaN(normVelX)) {
+            this.normalVelocities[this.velX] = {};
+        }
+
+        return this.normalVelocities[this.velX][this.velY] = {x: this.velX / dist, y: this.velY / dist};
     }
 
     get normVelX() {

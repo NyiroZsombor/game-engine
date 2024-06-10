@@ -8,9 +8,10 @@ class Object2D {
      * @param {Number} y - Y position of the object
      * @param {Number} width - Width of the object
      * @param {Number} height - Height of the object
+     * @param {*} objectList - An object with ids as keys and Object2Ds as velues. The list of objects that should be rendered and updated together
      * @param {Number[]} collisionLayerNums - The list of layers that specify which objects can collide with this object 
      */
-    constructor(x, y, width, height, collisionLayerNums = []) {
+    constructor(x, y, width, height, objectList, collisionLayerNums = []) {
         this.width = width;
         this.height = height;
         this.x = x;
@@ -24,7 +25,7 @@ class Object2D {
         this.canvas = this.gameCanvas.canvas;
         this.ctx = this.gameCanvas.ctx;
 
-        object2Ds[currentId] = this;
+        objectList[currentId] = this;
         this.id = currentId;
         currentId++;
     }
