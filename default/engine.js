@@ -33,6 +33,7 @@ function defaultUpdate() {
  */
 function renderDefault() {
     gameCanvas.clear();
+    camera.gameCanvas.clear();
 }
 
 /**

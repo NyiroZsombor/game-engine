@@ -4,13 +4,11 @@
 class Camera2D extends Object2D {
     /**
      * @constructor
-     * @param {Object2D[]} objectList - The list of objects that should be rendered relative to the camera
      * @param {Number} followX - The fraction of the camera's width where it should start following the followObject on the x axis [0.0, 1.0]
      * @param {Number} followY - The fraction of the camera's height where it should start following the followObject on the y axis [0.0, 1.0]
      */
-    constructor(objectList, followX = 0, followY = 0) {
+    constructor(followX = 0, followY = 0) {
         super(0, 0, canvas.width, canvas.height);
-        this.objectList = objectList;
         this.followX = followX;
         this.followY = followY;
         this.zoom = 1;

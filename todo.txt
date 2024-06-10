@@ -3,5 +3,6 @@
 ** collision layers should be a dictionary with custom layer names
 -- should be able to turn off decay factor of PhyscsObject2D
 -- add mouseDown to Input
-remove object2Ds list
+-- remove object2Ds list
 add ui module
+add errors eg. something is created but not updated
