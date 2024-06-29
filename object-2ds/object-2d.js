@@ -8,35 +8,37 @@ class Object2D {
      * @param {Number} y - Y position of the object
      * @param {Number} width - Width of the object
      * @param {Number} height - Height of the object
-     * @param {* | undefined} objectList - An object with ids as keys and Object2Ds as velues. The list of objects that should be rendered and updated together
+     * @param {* | undefined} objectList - A dictionary with ids as keys and Object2Ds as values. The list of objects that should be rendered and updated together
      * @param {Number[]} collisionLayerNums - The list of layers that specify which objects can collide with this object 
      */
     constructor(x, y, width, height, objectList = undefined, collisionLayerNums = []) {
+        this.id = currentId;
+        currentId++;
+        
+        this.collisionLayerNums = collisionLayerNums;
+        for (let i = 0; i < this.collisionLayerNums.length; i++) {
+            collisionLayers[this.collisionLayerNums[i]][this.id] = this;
+        }
+
+        this.gameCanvas = new GameCanvas(0, 0, 1, 1);
+        this.canvas = this.gameCanvas.canvas;
+        this.ctx = this.gameCanvas.ctx;
+
         this.width = width;
         this.height = height;
         this.x = x;
         this.y = y;
-        this.collisionLayerNums = collisionLayerNums;
-        for (let i = 0; i < this.collisionLayerNums.length; i++) {
-            collisionLayers[this.collisionLayerNums[i]].push(this);
-        }
-
-        this.gameCanvas = new GameCanvas(0, 0, this.width, this.height);
-        this.canvas = this.gameCanvas.canvas;
-        this.ctx = this.gameCanvas.ctx;
 
         if (objectList) {
-            objectList[currentId] = this;
+            objectList[this.id] = this;
             this.objectList = objectList;
         }
-        this.id = currentId;
-        currentId++;
     }
 
     /**
      * Returns whether a collision occured between two objects
      * @param {Object2D} object2D - The object the collision should be tested against
-     * @returns {Boolean} The occurence of the collision
+     * @returns {boolean} The occurence of the collision
      */
     collide(object2D) {
         let xCollision = object2D.x < this.right && object2D.right > this.x;
@@ -47,22 +49,22 @@ class Object2D {
 
     /**
      * Checks if the object is being hovered by the mouse 
-     * @returns If the object is being hovered by the mouse
+     * @returns {boolean} If the object is being hovered by the mouse
      */
     isMouseOver() {
-        xOver = input.mousePos.x > this.x && input.mousePos.x < this.right;
-        yOver = input.mousePos.y > this.y && input.mousePos.y < this.bottom;
+        let xOver = input.mousePos.x > this.x && input.mousePos.x < this.right;
+        let yOver = input.mousePos.y > this.y && input.mousePos.y < this.bottom;
         return xOver && yOver;
     }
     
     /**
-     * Should be runs every frame, the updating of the properties of the object should be done here
+     * Should be run every frame, the updating of the properties of the object should be done here
      * @param {Number} dt - Time elapsed since the last frame in seconds
      */
     update(dt) {}
 
     /**
-     * Should runs every frame, the rendering of the object should be done heres
+     * Should run every frame, the rendering of the object should be done heres
      */
     render() {}
 
@@ -142,5 +144,23 @@ class Object2D {
 
     get centerY() {
         return this.$centerY;
+    }
+
+    set width(w) {
+        this.$width = w;
+        this.gameCanvas.width = w;
+    }
+
+    set height(h) {
+        this.$height = h;
+        this.gameCanvas.height = h;
+    }
+
+    get width() {
+        return this.$width;
+    }
+
+    get height() {
+        return this.$height;
     }
 }

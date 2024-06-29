@@ -58,8 +58,11 @@ class Camera2D extends Object2D {
      * @param {Object2D} obj - Object to be rendered
      */
     renderObject(obj) {
+        let x = obj.x + obj.gameCanvas.x - this.x;
+        let y = obj.y + obj.gameCanvas.y - this.y;
+        if (!this.collide(obj)) return;
         obj.render();
-        obj.gameCanvas.toCtx(this.ctx, obj.x + obj.gameCanvas.x - this.x, obj.y + obj.gameCanvas.y - this.y);
+        obj.gameCanvas.toCtx(this.ctx, x, y);
     }
 
     /**
@@ -68,7 +71,7 @@ class Camera2D extends Object2D {
      */
     renderListOfObjects(objs) {
         for (let key in objs) {
-            let obj = obj[key];
+            let obj = objs[key];
             this.renderObject(obj);
         }
     }

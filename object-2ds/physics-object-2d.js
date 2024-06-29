@@ -9,11 +9,12 @@ class PhysicsObject2D extends Object2D {
      * @param {Number} y - Y position of the object
      * @param {Number} w - Width of the object
      * @param {Number} h - Height of the object
+     * @param {* | undefined} objectList - A dictionary with ids as keys and Object2Ds as values. The list of objects that should be rendered and updated together
      * @param {Number[]} collisionLayerNums - The list of layers that specify which objects can collide with this object 
      * @param {Number[]} collisionMaskNums - The list of layers that specify which objects can this object collide with
      */
-    constructor(x, y, w, h, collisionLayerNums = [], collisionMaskNums = []) {
-        super(x, y, w, h, collisionLayerNums);
+    constructor(x, y, w, h, objectList, collisionLayerNums = [], collisionMaskNums = []) {
+        super(x, y, w, h, objectList, collisionLayerNums);
         this.collisionMaskNums = collisionMaskNums;
 
         this.velX = 0;
@@ -49,8 +50,8 @@ class PhysicsObject2D extends Object2D {
         for (let i = 0; i < this.collisionMaskNums.length; i++) {
             let currentCollisionLayerNum = this.collisionMaskNums[i];
             
-            for (let i = 0; i < collisionLayers[currentCollisionLayerNum].length; i++) {
-                let collider = collisionLayers[currentCollisionLayerNum][i];
+            for (let key in collisionLayers[currentCollisionLayerNum]) {
+                let collider = collisionLayers[currentCollisionLayerNum][key];
                 
                 if (this == collider) continue;
                 if (!this.collide(collider)) continue;
@@ -93,12 +94,6 @@ class PhysicsObject2D extends Object2D {
         this.velX *= decayFactor;
         this.velY *= decayFactor;
     }
-
-    /**
-     * Updating the properties of the object
-     * @param {Number} dt - Time elapsed since the last frame in seconds
-     */
-    update(dt) {}
 
     normVelExists() {
         let normVelX = this.normalVelocities[this.velX];
