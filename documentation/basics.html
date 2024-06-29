@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Documentation: The basics</title>
+
+    <script src="reusable-elements.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <nav-bar></nav-bar>
+
+    <div id="main">
+        <div id="page-title">
+            <h1>Introduction: </h1>
+            <h2>The basics</h2>
+        </div>
+        <p>
+            This introduction will go over the basics to get you started. It will show you how to create a player and some obstacles that it can collide with. Let's get started!
+        </p>
+        <p>
+            We should start by creating the player. We can make a <span class="code">Player</span> class that inherits <a href="PhysicsObject2D.html">PhysicsObject2D</a>. It has some properites by default that we don't need right now like <span clas="code">this.gravity</span> and some that need changing like <span class="code">this.speed</span>. Since we don't want the player to be part of a dictionary with other objects because we only need one player for now, we pass in <span class="code">undefined</span> for the <span class="code">objectList</span> parameter. We also don't have anything that can collide with this object so we pass in <span class="code">undefined</span> again for the <span class="code">collisionLayerNums</span> parameter. Then we pass in a list with a 0 in it for the <span class="code">collisionMaskNums</span> parameter. This means that we want the player to collide with object on collision layer 0.
+        </p>
+        <div class="important">
+            <span class="code">collisionLayerNums</span>: objects that <em>can collide with this object</em>
+        </div>
+        <div class="important">
+            <span class="code">collisionMaskNums</span>: objects that <em>this object can collide with</em>
+        </div>
+        <ol class="code-snippet">
+            <li><pre>class Player extends PhysicsObject2D {</pre></li>
+            <li><pre>    constructor(x, y) {</pre></li>
+            <li><pre>        super(x, y, 60, 60, undefined, undefined, [0]);</pre></li>
+            <li><pre>        this.gravity = 0;</pre></li>
+            <li><pre>        this.speed = 80;</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+        <p>
+            Let's add the movement and controlls! We can achieve this by defining the <span class="code">update()</span> method of the <span class="code">Player</span> class. Using the <a href="Input.html">input</a> module we can check if a key is being pressed and change the velocity based on that. Lastly we can move the player using the <a href="PhysicsObject2D.html">PhysicsObject2D</a>.<a href="PhysicsObject2D.html#move">move()</a> method.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>class Player extends PhysicsObject2D {</pre></li>
+            <li><pre>    constructor(x, y) { ... }</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    update(dt) {</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowRight"] > 0) this.velX = this.speed;</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowLeft"] > 0) this.velX = -this.speed;</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowUp"] > 0) this.velY = -this.speed;</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowDown"] > 0) this.velY = this.speed;</pre></li>
+            <li><pre></pre></li>
+            <li><pre>        this.move(dt);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+        <p>
+            Following with the rendering we define the <span class="code">render()</span> method of our player. It will just be a simple rectangle.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>class Player extends PhysicsObject2D {</pre></li>
+            <li><pre>    constructor(x, y) { ... }</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    update(dt) { ... }</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    render() {</pre></li>
+            <li><pre>        this.ctx.fillStyle = "blue";</pre></li>
+            <li><pre>        this.ctx.fillRect(0, 0, this.width, this.height);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+        <p>
+            We can now create a player object and tell the <a href="Camera2D">camera</a> to follow it.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>const player = new Player(0, 0);</pre></li>
+            <li><pre>camera.followX = 0.1;</pre></li>
+            <li><pre>camera.followY = 0.1;</pre></li>
+            <li><pre>camera.followObject = player;</pre></li>
+        </ol>
+        <p>
+            We are now basically done with the player we just have to update and render it. For the former we use the <a href="engine.html#update">update()</a> function and for rednering the <a href="engine.html#render">render()</a> function both built into the <a href="engine.html">engine</a>. Note that to render something when using the camera, use <a href="camera2D.html">camera</a>.<a href="Camera2D.html#renderObject">renderObject()</a> method. If the camera is not used there is no need to update and render it.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>function update(dt) {</pre></li>
+            <li><pre>    player.update(dt);</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    camera.update();</pre></li>
+            <li><pre>}</pre></li>
+            <li><pre></pre></li>
+            <li><pre>function render() {</pre></li>
+            <li><pre>    camera.renderObject(player);</pre></li>
+            <li><pre>    camera.render();</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+        <p>
+            Only the obstacles are left. Making them going to be very similiar to the player but easier! We create a class for it this time extending <a href="Object2D.html">Object2D</a>.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>class Wall extends Object2D {</pre></li>
+            <li><pre>    constructor(x, y, width, height) {</pre></li>
+            <li><pre>        super(x, y, width, height, walls, [0]);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    render() {</pre></li>
+            <li><pre>        this.ctx.fillStyle = "red";</pre></li>
+            <li><pre>        this.ctx.fillRect(0, 0, this.width, this.height);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+        <p>
+            And we can already create them! Don't forget to make an object for storing them. The object should be a dictionary with object ids as keys and Object2Ds as values.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>const walls = {};</pre></li>
+            <li><pre>new Wall(500, -50, 25, 600);</pre></li>
+            <li><pre>new Wall(-100, 200, 200, 50);</pre></li>
+        </ol>
+        <p>
+            The walls don't move so no need to update them. They still need rendering. To render multiple objects with the <a href="Camera2D.html">camera</a> we can use the <a href="Camera2D.html">camera</a>.<a href="Camera2D.html#renderListOfObjects">renderListOfObjects()</a> method. Just pass the dictionary of the objects as parameter.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>function render() {</pre></li>
+            <li><pre>    camera.renderListOfObjects(walls); // <-- new</pre></li>
+            <li><pre>    camera.renderObject(player);</pre></li>
+            <li><pre>    camera.render();</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+        <p>
+            With this we have finished. Don't forget to attach the script to <span class="code">index.html</span> in some way to try it. Here is all the code we wrote:
+        </p>
+
+        <ol class="code-snippet">
+            <li><pre>// create classes</pre></li>
+            <li><pre>class Wall extends Object2D {</pre></li>
+            <li><pre>    constructor(x, y, width, height) {</pre></li>
+            <li><pre>        super(x, y, width, height, walls, [0]);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    render() {</pre></li>
+            <li><pre>        this.ctx.fillStyle = "red";</pre></li>
+            <li><pre>        this.ctx.fillRect(0, 0, this.width, this.height);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre>}</pre></li>
+            <li><pre></pre></li>
+            <li><pre>class Player extends PhysicsObject2D {</pre></li>
+            <li><pre>    constructor(x, y) {</pre></li>
+            <li><pre>        super(x, y, 60, 60, undefined, undefined, [0]);</pre></li>
+            <li><pre>        this.gravity = 0;</pre></li>
+            <li><pre>        this.speed = 80;</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    update(dt) {</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowRight"] > 0) this.velX = this.speed;</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowLeft"] > 0) this.velX = -this.speed;</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowUp"] > 0) this.velY = -this.speed;</pre></li>
+            <li><pre>        if (input.keysPressed["ArrowDown"] > 0) this.velY = this.speed;</pre></li>
+            <li><pre></pre></li>
+            <li><pre>        this.move(dt);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    render() {</pre></li>
+            <li><pre>        this.ctx.fillStyle = "blue";</pre></li>
+            <li><pre>        this.ctx.fillRect(0, 0, this.width, this.height);</pre></li>
+            <li><pre>    }</pre></li>
+            <li><pre>}</pre></li>
+            <li><pre></pre></li>
+            <li><pre>// create player</pre></li>
+            <li><pre>const player = new Player(0, 0);</pre></li>
+            <li><pre>camera.followX = 0.1;</pre></li>
+            <li><pre>camera.followY = 0.1;</pre></li>
+            <li><pre>camera.followObject = player;</pre></li>
+            <li><pre></pre></li>
+            <li><pre>// create obstacles</pre></li>
+            <li><pre>const walls = {};</pre></li>
+            <li><pre>new Wall(500, -50, 25, 600);</pre></li>
+            <li><pre>new Wall(-100, 200, 200, 50);</pre></li>
+            <li><pre></pre></li>
+            <li><pre>// create functions</pre></li>
+            <li><pre>function update(dt) {</pre></li>
+            <li><pre>    player.update(dt);</pre></li>
+            <li><pre></pre></li>
+            <li><pre>    camera.update();</pre></li>
+            <li><pre>}</pre></li>
+            <li><pre></pre></li>
+            <li><pre>function render() {</pre></li>
+            <li><pre>    camera.renderListOfObjects(walls);</pre></li>
+            <li><pre>    camera.renderObject(player);</pre></li>
+            <li><pre>    camera.render();</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+    </div>
+</body>
+</html>
+
+<!-- Inside source.html
+<a href="target.html#scrollToHere" onclick="scrollToAnchor('scrollToHere')">Go to Target and Scroll</a>
+
+<script>
+  function scrollToAnchor(anchorId) {
+    // Check if the anchor exists
+    if (document.getElementById(anchorId)) {
+      // Scroll to the anchor
+      document.getElementById(anchorId).scrollIntoView();
+    }
+  }
+</script>
+-->
