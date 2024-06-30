@@ -1,7 +1,6 @@
 class ButtonComponent extends UIComponent {
-    constructor(objectList = undefined) {
-        super(objectList);
-        this.width = this.height = 30;
+    constructor(x, y, width, height, objectList = undefined) {
+        super(x, y, width, height, objectList);
         this.clicked = 0;
     }
 
@@ -9,7 +8,7 @@ class ButtonComponent extends UIComponent {
     onHold() {}
     //onRelease() {}
 
-    update() {
+    updateMouseEvents() {
         if (this.clicked != 0) this.clicked++;
         if (this.isMouseOver() && input.mouseDown == 1) {
             this.onClick();
@@ -20,6 +19,8 @@ class ButtonComponent extends UIComponent {
             this.onHold();
         }
     }
+
+    update() {}
 
     renderDefault() {
         this.ctx.fillStyle = "#999";
@@ -41,9 +42,15 @@ class ButtonComponent extends UIComponent {
         this.ctx.stroke();
     }
 
+    renderHovered() {
+        this.ctx.strokeStyle = "#0A8";
+        this.ctx.strokeRect(0, 0, this.width, this.height);
+    }
+
     render() {
         this.gameCanvas.clear();
         if (this.clicked > 0) this.renderClicked();
         else this.renderDefault();
+        if (this.isMouseOver()) this.renderHovered();
     }
 }
