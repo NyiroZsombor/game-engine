@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Documentation: Object2D</title>
+
+    <script src="reusable-elements.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <nav-bar></nav-bar>
+    <div id="main">
+        <div id="page-title">
+            <h1>2D objects: </h1>
+            <h2>Object2D(x, y, width, height, objectList, collisionLayerNums)</h2>
+        </div>
+        <p>An object with 2D positions and dimensions</p>
+        <div class="important"><span class="code">x</span>: X position of the object</div>
+        <div class="important"><span class="code">Y</span>: position of the object</div>
+        <div class="important"><span class="code">width</span>: Width of the object</div>
+        <div class="important"><span class="code">height</span>: Height of the object</div>
+        <div class="important"><span class="code">objectList</span>: A dictionary with ids as keys and Object2Ds as values. The list of objects that should be rendered and updated together</div>
+        <div class="important"><span class="code">collisionLayerNums</span>: The list of layers that specify which objects can collide with this object</div>
+
+        <h3>Methods</h3>
+        <div class="important"><a href="#collide">collide()</a></div>
+        <div class="important"><a href="#isMouseOver">isMouseOver()</a></div>
+        <div class="important"><a href="#update">update()</a></div>
+        <div class="important"><a href="#render">render()</a></div>
+        <div class="important"><a href="#renderDebug">renderDebug()</a></div>
+
+        <br>
+
+        <div class="important" id="collide"><span class=code>collide(object2D: Object2D) -> boolean</span></div>
+        <p>
+            Returns whether a collision occured between two objects
+            <div class="important">object2D: The object the collision should be tested against</div>
+        </p>
+        <div class="important" id="isMouseOver"><span class=code>isMouseOver() -> boolean</span></div>
+        <p>
+            Checks if the object is being hovered by the mouse 
+        </p>
+        <div class="important" id="update"><span class=code>update(dt: Number) -> void</span></div>
+        <p>
+            Should be run every frame, the updating of the properties of the object should be done here
+            <div class="important">dt: Time elapsed since the last frame in seconds</div>
+        </p>
+        <div class="important" id="render"><span class=code>render() -> void</span></div>
+        <p>
+            Should run every frame, the rendering of the object should be done here
+        </p>
+
+        <h3>Summary</h3>
+        <p>
+            Object2D is used for static, rectangular objects. For example we can use them for the walls of our game.
+        </p>
+        <ol class="code-snippet">
+            <li><pre>new Object2D(500, 600, 20, 400, walls, [0, 1])</pre></li>
+        </ol>
+        <p>
+            This piece of code creates a rectangle at position <span class="code">x = 500, y = 600</span> in the world. Note that these are <em>absolute</em> coordinates meaning that unless the camera is at <span class="code">x = 0, y = 0</span> then the object will not appear at <span class="code">x = 500, y = 600</span> on the screen.
+        </p>
+        <p>
+            The variable <span class="code">walls</span> passed in to the parameter objectList means that the new object will be added automatically to <span class="code">walls</span>. This is a dictionary containing similiar objects, in this case walls. This may look something like this:
+        </p>
+        <ol class="code-snippet">
+            <li><pre>walls = {</pre></li>
+            <li><pre>    id: 2, Object2D -> {x, y, width, height}</pre></li>
+            <li><pre>    id: 34, Object2D -> {x, y, width, height}</pre></li>
+            <li><pre>    id: 45, Object2D -> {x, y, width, height}</pre></li>
+            <li><pre>};</pre></li>
+        </ol>
+        <p>
+            When a new <span class="code">object2D</span> is created it will add itself to the <span class="code">objectList</span> passed in. Here's the responsible code:
+        </p>
+        <ol class="code-snippet">
+            <li><pre>class object2D {</pre></li>
+            <li><pre>   constructor(x, y, width, height, objectList, collisionLayerNums) {</pre></li>
+            <li><pre>   this.id = currentID;</pre></li>
+            <li><pre>   currentID++;</pre></li>
+            <li><pre>   </pre></li>
+            <li><pre>   if (objectList) {</pre></li>
+            <li><pre>       objectList[this.id] = this</pre></li>
+            <li><pre>   }</pre></li>
+            <li><pre>}</pre></li>
+        </ol>
+        <p>
+            It assigns an ID to the object and then <span class="code">objectList[this.id]</span> to itself.
+        </p>
+        <p>
+            <span class="code">[0, 1]</span> passed in to the parameter <span class="code">collisionLayerNums</span> means that objects on the collision layers 0 and 1 can collide with this object. In this context collision layer 0 may be the player and 1 the enemies. This ensures that neither the enemies nor the player can pass through the walls.
+        </p>
+    </div>
+</body>
+</html>
+<!--
+    /**
+     * Returns whether a collision occured between two objects
+     * @param {Object2D} object2D - The object the collision should be tested against
+     * @returns {boolean} The occurence of the collision
+     */
+    collide(object2D) 
+
+    /**
+     * @constructor
+     * @param {Number} x - X position of the object
+     * @param {Number} y - Y position of the object
+     * @param {Number} width - Width of the object
+     * @param {Number} height - Height of the object
+     * @param {* | undefined} objectList - A dictionary with ids as keys and Object2Ds as values. The list of objects that should be rendered and updated together
+     * @param {Number[]} collisionLayerNums - The list of layers that specify which objects can collide with this object 
+     */
+-->
