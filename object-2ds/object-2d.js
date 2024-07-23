@@ -52,8 +52,8 @@ class Object2D {
      * @returns {boolean} If the object is being hovered by the mouse
      */
     isMouseOver() {
-        let xOver = input.mousePos.x > this.x && input.mousePos.x < this.right;
-        let yOver = input.mousePos.y > this.y && input.mousePos.y < this.bottom;
+        let xOver = input.mouse.pos.x > this.x && input.mouse.pos.x < this.right;
+        let yOver = input.mouse.pos.y > this.y && input.mouse.pos.y < this.bottom;
         return xOver && yOver;
     }
     
