@@ -63,8 +63,7 @@ function render() {}
  */
 function postUpdate(dt) {}
 
-gameCanvas = new GameCanvas(0, 0, window.innerWidth, window.innerHeight);
-gameCanvas.display = true;
+gameCanvas = new GameCanvas(0, 0, window.innerWidth, window.innerHeight, true);
 const canvas = gameCanvas.canvas;
 const ctx = gameCanvas.ctx;
 let fps = 60;
