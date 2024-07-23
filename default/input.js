@@ -2,18 +2,9 @@
  * An Input object capable of handling keyboard and mouse inputs 
  */
 class Input {
-    /**
-     * @constructor
-     */
-    constructor() {
-        this.keysPressed = {};
-        this.mousePos = {x: undefined, y: undefined};
-        this.actionKeys = {}; // {code: actionName ...}
-        this.actionFunctionalities = {}; // {actionName: action ...}
-        this.preventDefaultKeyActionList = [];
-        
-        this.loadKeyboard();
-    }
+    actionKeys = {}; // {code: actionName ...}
+    actionFunctionalities = {}; // {actionName: action ...}
+    preventDefaultKeyActionList = [];
 
     /**
      * Creation an Action object for a keyboard input
@@ -48,6 +39,7 @@ class Input {
      * Loads keyboard related event listeners
      */
     loadKeyboard() {
+        this.keysPressed = {};
         this.loadDefaultActions();
 
         document.addEventListener("keydown", e => {
@@ -95,26 +87,57 @@ class Input {
     }
 
     updateMousePos(e) {
-        this.mousePos.x = e.clientX;
-        this.mousePos.y = e.clientY;
+        this.mouse.pos.x = e.clientX;
+        this.mouse.pos.y = e.clientY;
+    }
+
+    updateMouseKeys(e, value) {
+        const mouseButtons = ["left", "right", "middle", "back", "forward"];
+        let eventButons = Number(e.buttons);
+
+        for (let i = mouseButtons.length; i >= 0; i--) {
+            let key = mouseButtons[i];
+            let power = 2**i;
+            if (eventButons >= power) {
+                eventButons -= power;
+                if (value === 1) this.mouse.pressed[key] = 1;
+            }
+            else {
+                delete this.mouse.pressed[key];
+            }
+        }
+    }
+
+    updateMouseWheel(e) {
+        this.mouse.scroll = Math.sign(e.deltaY);
     }
  
     /**
      * Loads mouse related event listeners
      */
     loadMouse() {
-        document.addEventListener("mousemove", e => {
+        this.mouse = {
+            pos: {x: undefined, x: undefined},
+            scroll: 0,
+            pressed: {}
+        };
+
+        window.addEventListener("mousemove", e => {
             this.updateMousePos(e);
         });
 
-        document.addEventListener("mousedown", e => {
+        window.addEventListener("mousedown", e => {
             this.updateMousePos(e);
-            this.mouseDown = 1;
+            this.updateMouseKeys(e, 1);
         });
 
-        document.addEventListener("mouseup", e => {
+        window.addEventListener("mouseup", e => {
             this.updateMousePos(e);
-            this.mouseDown = 0;
+            this.updateMouseKeys(e, 0);
+        });
+
+        window.addEventListener("wheel", e=> {
+            this.updateMouseWheel(e);
         });
     }
 
@@ -123,6 +146,32 @@ class Input {
      */
     update() {
         for (let key in this.keysPressed) this.keysPressed[key]++;
-        if (this.mouseDown > 0) this.mouseDown++;
+        for (let key in this.mouse.pressed) this.mouse.pressed[key]++;
+    }
+
+    get keysPressed() {
+        if (this.$keysPressed == undefined) {
+            console.error("Tried to access keysPressed before loading keyboard");
+        }
+        else {
+            return this.$keysPressed;
+        }
+    }
+
+    get mouse() {
+        if (this.$mouse == undefined) {
+            console.error("Tried to access mouse before loading mouse");
+        }
+        else {
+            return this.$mouse;
+        }
+    }
+
+    set keysPressed(value) {
+        this.$keysPressed = value;
+    }
+
+    set mouse(value) {
+        this.$mouse = value;
     }
 }
