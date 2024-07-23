@@ -24,6 +24,7 @@ function gameLoop() {
  * Default updates run by the engine
  */
 function defaultUpdate() {
+    gameTicks++;
     dt = (Date.now() - pt) / 1000;
     pt = Date.now();
 }
@@ -66,6 +67,7 @@ function postUpdate(dt) {}
 gameCanvas = new GameCanvas(0, 0, window.innerWidth, window.innerHeight, true);
 const canvas = gameCanvas.canvas;
 const ctx = gameCanvas.ctx;
+let gameTicks = 0;
 let fps = 60;
 let dt = 0;
 let pt = Date.now();
