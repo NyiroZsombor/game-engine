@@ -145,8 +145,8 @@ class Input {
      * Runs every frame, updates the properties of the object
      */
     update() {
-        for (let key in this.keysPressed) this.keysPressed[key]++;
-        for (let key in this.mouse.pressed) this.mouse.pressed[key]++;
+        if (this.$keysPressed != undefined) for (let key in this.keysPressed) this.keysPressed[key]++;
+        if (this.mouse != undefined) for (let key in this.mouse.pressed) this.mouse.pressed[key]++;
     }
 
     get keysPressed() {
